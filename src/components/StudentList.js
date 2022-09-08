@@ -4,17 +4,22 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 
-export default function StudentList() {
+export default function StudentList(props) {
   const [students, setStudents] = useState([]);
+
   useEffect(() => {
     getStudents();
   }, []);
+
   let getStudents = () => {
     axios
       .get("http://localhost:8080/listStudents")
       .then((response) => setStudents(response.data))
       .catch((error) => alert(error));
   };
+
+
+
   return (
     <div className="my-3">
       <Container>
@@ -38,16 +43,18 @@ export default function StudentList() {
                 </tr>
               ) : (
                 students.map((student)=>
-                <tr>
+                <tr key={student.id}>
                   <td>{student.id}</td>
                   <td>{student.name}</td>
                   <td>{student.address}</td>
+                  
                   <td>
                     <ButtonGroup>
                       <Button size="sm" variant="outline-primary"><FontAwesomeIcon icon={faEdit}> Edit </FontAwesomeIcon></Button>{ ' '}
                       <Button size="sm" variant="outline-danger"><FontAwesomeIcon icon={faTrash}> Delete </FontAwesomeIcon></Button>
                     </ButtonGroup>
                   </td>
+                  
                 </tr>
                 )
               )}
